@@ -1,4 +1,4 @@
-require './lib/ship'
+require 'spec_helper'
 
 RSpec.describe Ship do
   before(:each) do
@@ -25,7 +25,7 @@ RSpec.describe Ship do
     expect(@cruiser.sunk?).to eq(false)
   end
 
-  it 'checks health after being hit' do
+  it 'health reduces after being hit' do
     @cruiser.hit
     expect(@cruiser.health).to eq(2)
 
