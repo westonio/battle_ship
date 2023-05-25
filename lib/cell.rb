@@ -25,5 +25,19 @@ class Cell
     @fired_upon
   end
 
+  def render(reveal_ship = false)
+    if fired_upon?
+      if !empty? && ship.sunk?
+        "X"
+      elsif empty?
+        "M"
+      else
+        "H"
+      end
+    else
+      reveal_ship && !empty? ? "S" : "."
+    end
+  end
+
   # end class
 end
