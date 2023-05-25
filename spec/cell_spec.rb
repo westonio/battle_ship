@@ -68,10 +68,10 @@ Rspec.describe Cell do
     end
   
     it 'can optionally render ship not found yet' do
-      expect(@cell.render).to eq(".")
       @cell.place_ship(@cruiser)
       
       expect(@cell.render(true)).to eq("S")
+      expect(@cell.render(false)).to eq(".") # conceal cell - not fired upon
     end
   end
 end
