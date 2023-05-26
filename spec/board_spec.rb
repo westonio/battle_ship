@@ -39,12 +39,12 @@ RSpec.describe Board do
     it 'can be placed verticaly or horizonatally only' do
       cruiser = Ship.new("Cruiser", 3)
 
-      expect(@board.valid_placement?(cruiser, ["A1", "B2", "C3"])).to be(false) #cannot be diagonally
+      expect(@board.valid_placement?(cruiser, ["A1", "B2", "C3"])).to be(false)
       expect(@board.valid_placement?(cruiser, ["A1", "A2", "A3"])).to be(true)
       expect(@board.valid_placement?(cruiser, ["B2", "C2", "D2"])).to be(true)
     end
 
-    xit 'can only be placed in consecutive order' do
+    it 'can only be placed in consecutive order' do
       cruiser = Ship.new("Cruiser", 3)
 
       expect(@board.valid_placement?(cruiser, ["A1", "A2", "A4"])).to be(false)
