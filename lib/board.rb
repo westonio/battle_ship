@@ -14,4 +14,8 @@ class Board
     end
     cells
   end
+
+  def valid_coordinate?(coordinate)
+    cells.has_key?(coordinate)
+  end
 end
