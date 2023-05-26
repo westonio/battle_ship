@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/connorrichmond/turing_work/1mod/projects/battle_ship/lib/ship.rb": {
+      "/Users/westonschutt/turing/1mod/projects/battle_ship/lib/ship.rb": {
         "lines": [
           1,
           1,
@@ -26,55 +26,8 @@
           null,
           null
         ]
-      },
-      "/Users/connorrichmond/turing_work/1mod/projects/battle_ship/lib/cell.rb": {
-        "lines": [
-          1,
-          null,
-          1,
-          null,
-          1,
-          0,
-          0,
-          0,
-          null,
-          null,
-          1,
-          0,
-          null,
-          null,
-          1,
-          0,
-          null,
-          null,
-          1,
-          0,
-          0,
-          null,
-          null,
-          1,
-          0,
-          null,
-          null,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          null,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null
-        ]
       }
     },
-    "timestamp": 1685057788
+    "timestamp": 1685057354
   }
 }
