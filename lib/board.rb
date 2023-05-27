@@ -18,25 +18,26 @@ class Board
     cells.has_key?(coordinate)
   end
 
-  def valid_placement?(ship, cells)
-     same_length?(ship, cells) && 
-     not_diagonal?(cells) &&
-     consecutive?(ship, cells)
+  def valid_placement?(ship, for_cells)
+     same_length?(ship, for_cells) && 
+     not_diagonal?(for_cells) &&
+     consecutive?(ship, for_cells) &&
+     not_overlapping?(ship, for_cells)
   end
 
-  def same_length?(ship, cells)
-    ship.length == cells.length
+  def same_length?(ship, for_cells)
+    ship.length == for_cells.length
   end
 
-  def not_diagonal?(cells)
-    cells[0][0] == cells[1][0] || cells[0][1] == cells[1][1]
+  def not_diagonal?(for_cells)
+    for_cells[0][0] == for_cells[1][0] || for_cells[0][1] == for_cells[1][1]
   end
 
-  def consecutive?(ship, cells)
+  def consecutive?(ship, for_cells)
     #separate letters and numbers
     letters = []
     numbers = []
-    cells.each do |cell|
+    for_cells.each do |cell|
       letters << cell[0]
       numbers << cell[1]
     end
@@ -65,5 +66,20 @@ class Board
       numbers << valid_arrays
     end
     numbers
+  end
+
+  #This is a helper method for .consecutive?
+  def not_overlapping?(ship, for_cells)
+    for_cells.all? do |cell|
+      @cells[cell].ship.nil?
+    end
+  end
+
+  def place(ship, for_cells)
+    if valid_placement?(ship, for_cells)
+      for_cells.each do |cell|
+        @cells[cell].place_ship(ship)
+      end 
+    end
   end
 end
