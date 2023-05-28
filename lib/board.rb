@@ -42,11 +42,14 @@ class Board
       numbers << cell[1]
     end
     #run through helper methods to determine if sequence valid
-    letter_possibilities(ship).any? do |valid_arrays|
-      valid_arrays == letters
-    end ||
-    number_possibilities(ship).any? do |valid_arrays|
-      valid_arrays == numbers
+    if letters.uniq.length == 1
+      number_possibilities(ship).any? do |valid_arrays|
+        valid_arrays == numbers
+      end
+    elsif numbers.uniq.length == 1
+      letter_possibilities(ship).any? do |valid_arrays|
+        valid_arrays == letters
+      end
     end
   end
 
@@ -99,5 +102,4 @@ class Board
       "D #{cells["D1"].render} #{cells["D2"].render} #{cells["D3"].render} #{cells["D4"].render} \n"
     end
   end
-
 end
