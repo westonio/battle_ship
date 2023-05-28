@@ -19,11 +19,11 @@ class NewGame
   end
 
   def play
-    computer_board = Board.new
-    player_board = Board.new
+    @computer_board = Board.new
+    @player_board = Board.new
 
     # computer random placement goes here
-    player_place_ships(player_board)
+    player_place_ships
   end
 
   def player_place_ships
@@ -35,15 +35,44 @@ class NewGame
          "B . . . .\n" +
          "C . . . .\n" +
          "D . . . ."
-
-    place_ship("Cruiser")
+    
+    cruiser_response
+    submarine_response
   end
 
-  def place_ship(ship, for_cells)
-    puts "Enter the squares for the #{ship})"
-    placement = gets.chomp.split
-
-
+  def cruiser_response
+    puts "Enter the squares for the Cruiser (3 spaces)"
+    @cruiser_placement = gets.chomp.split.to_a
+    place_cruiser
   end
+
+  def place_cruiser
+    cruiser = Ship.new("Cruiser", 3)
+    if @player_board.validate_placement?(cruiser, cruiser_placement))
+      @player_board.place(cruiser, cruiser_placement)
+      puts @player_board.render(true)
+    else 
+      puts "Invalid placement."
+      cruiser_response
+    end
+  end
+
+  def submarine_response
+    puts "Enter the squares for the Submarine (2 spaces)"
+    @cruiser_placement = gets.chomp.split.to_a
+    place_submarine
+  end
+
+  def place_submarine
+    submarine = Ship.new("Submarine", 3)
+    if @player_board.validate_placement?(submarine, submarine_placement))
+      @player_board.place(submarine, submarine_placement)
+      puts @player_board.render(true)
+    else 
+      puts "Invalid placement."
+      submarine_response
+    end
+  end
+
 
 end
