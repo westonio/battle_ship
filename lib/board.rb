@@ -42,11 +42,14 @@ class Board
       numbers << cell[1]
     end
     #run through helper methods to determine if sequence valid
-    letter_possibilities(ship).any? do |valid_arrays|
-      valid_arrays == letters
-    end ||
-    number_possibilities(ship).any? do |valid_arrays|
-      valid_arrays == numbers
+    if letters.uniq.length == 1
+      number_possibilities(ship).any? do |valid_arrays|
+        valid_arrays == numbers
+      end
+    elsif numbers.uniq.length == 1
+      letter_possibilities(ship).any? do |valid_arrays|
+        valid_arrays == letters
+      end
     end
   end
 
@@ -100,4 +103,20 @@ class Board
     end
   end
 
+  def randomly_place(ship)
+    placement = random_cells(ship)
+    place(ship, placement)
+  end
+
+  #This is a helper method for .randomly_place
+  def random_cells(ship)
+    length = ship.length
+    cell_options = cells.keys
+    placement = cell_options.sample(length)
+
+    until valid_placement?(ship, placement) 
+      placement = cell_options.sample(length)
+    end
+    placement
+  end
 end
