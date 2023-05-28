@@ -8,10 +8,10 @@ class NewGame
 
 
   def start
-    if @response = 'p'
+    if @response == 'p'
       computer_board = Board.new
       player_board = Board.new
-    elsif @response = 'q'
+    elsif @response == 'q'
       puts "Thank you for playing BATTLESHIP!"
     else 
       puts 'Invalid Input Please use either p or q.'
