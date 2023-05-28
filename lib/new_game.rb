@@ -22,7 +22,8 @@ class NewGame
     @computer_board = Board.new
     @player_board = Board.new
 
-    # computer random placement goes here
+    computer_board.randomly_place(cruiser = Ship.new("Cruiser", 3))
+    computer_board.randomly_place(submarine = Ship.new("Submarine", 2))
     player_place_ships
   end
 
