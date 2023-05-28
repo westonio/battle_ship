@@ -109,4 +109,21 @@ RSpec.describe Board do
     @board.cells["A3"].fire_upon
     expect(@board.render(true)).to eq("  1 2 3 4 \nA X X X . \nB . . . . \nC . . . . \nD . . . . \n")
   end
+  
+  it 'randomly selects cells for placing ship' do
+    cruiser = Ship.new("Cruiser", 3)
+    placement = @board.random_cells(cruiser)
+
+    expect(@board.valid_placement?(cruiser, placement)).to eq(true)
+  end
+
+  it 'randomly places ship on the board' do
+    cruiser = Ship.new("Cruiser", 3)
+    placed = @board.randomly_place(cruiser)
+
+    expect(placed.length).to eq(3)
+    expect(@board.cells[placed[0]].ship).to eq(cruiser)
+    expect(@board.cells[placed[1]].ship).to eq(cruiser)
+    expect(@board.cells[placed[2]].ship).to eq(cruiser)
+  end
 end
