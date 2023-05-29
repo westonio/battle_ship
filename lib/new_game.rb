@@ -80,13 +80,17 @@ class NewGame
   def player_shot
     puts "Choose a coordinate to fire at:"
     shot_at = gets.chomp
-    if @computer_board.valid_coordinate?(shot_at) && !@computer_board.shots_taken.include?(shot_at)
+    if @computer_board.shots_taken.include?(shot_at)
+      puts "Oops! You already fired at #{shot_at}."
+      player_shot
+    end
+    if @computer_board.valid_coordinate?(shot_at)
       cell = @computer_board.cells[shot_at]
       @computer_board.track_shot(cell.coordinate)
       cell.fire_upon
       puts "Your shot on #{shot_at} was a #{hit_miss_sink(cell)}."
     else
-      puts "Please enter a valid coordinate:"
+      puts "Please enter a valid coordinate."
       player_shot
     end
   end
