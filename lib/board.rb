@@ -1,6 +1,5 @@
 class Board
-  attr_reader :cells,
-              :shots_taken
+  attr_reader :cells
 
   def initialize
     @cells = create_cells
@@ -19,29 +18,27 @@ class Board
     cells.has_key?(coordinate)
   end
 
-  def valid_placement?(ship, for_cells)
-     same_length?(ship, for_cells) && 
-     not_diagonal?(for_cells) &&
-     consecutive?(ship, for_cells) &&
-     not_overlapping?(ship, for_cells)
+  def valid_placement?(ship, coordinates)
+     same_length?(ship, coordinates) && 
+     not_diagonal?(coordinates) &&
+     consecutive?(ship, coordinates) &&
+     not_overlapping?(ship, coordinates)
   end
 
-  def same_length?(ship, for_cells)
-    ship.length == for_cells.length
+  def same_length?(ship, coordinates)
+    ship.length == coordinates.length
   end
 
-  def not_diagonal?(for_cells)
-    for_cells[0][0] == for_cells[1][0] || for_cells[0][1] == for_cells[1][1]
+  def not_diagonal?(coordinates)
+    coordinates[0][0] == coordinates[1][0] || coordinates[0][1] == coordinates[1][1]
   end
 
-  def consecutive?(ship, for_cells)
+  def consecutive?(ship, coordinates)
     #separate letters and numbers
-    letters = []
-    numbers = []
-    for_cells.each do |cell|
-      letters << cell[0]
-      numbers << cell[1]
+    separate_chars = coordinates.map do |coordinate|
+      coordinate.chars
     end
+    letters, numbers = separate_chars.transpose
     #run through helper methods to determine if sequence valid
     if letters.uniq.length == 1
       number_possibilities(ship).any? do |valid_arrays|
@@ -56,32 +53,32 @@ class Board
 
   #This is a helper method for .consecutive?
   def letter_possibilities(ship) 
-    letter_possibilities = []
-    ("A".."D").each_cons(ship.length) do |valid_arrays|
-      letter_possibilities << valid_arrays
+    letters = []
+    ("A".."D").each_cons(ship.length) do |valid_letters|
+      letters << valid_letters
     end
-    letter_possibilities
+    letters
   end
 
   #This is a helper method for .consecutive?
   def number_possibilities(ship)
     numbers = [] 
-    ("1".."4").each_cons(ship.length) do |valid_arrays|
-      numbers << valid_arrays
+    ("1".."4").each_cons(ship.length) do |valid_nums|
+      numbers << valid_nums
     end
     numbers
   end
 
   #This is a helper method for .consecutive?
-  def not_overlapping?(ship, for_cells)
-    for_cells.all? do |cell|
+  def not_overlapping?(ship, coordinates)
+    coordinates.all? do |cell|
       @cells[cell].ship.nil?
     end
   end
 
-  def place(ship, for_cells)
-    if valid_placement?(ship, for_cells)
-      for_cells.each do |cell|
+  def place(ship, coordinates)
+    if valid_placement?(ship, coordinates)
+      coordinates.each do |cell|
         @cells[cell].place_ship(ship)
       end 
     end
@@ -111,12 +108,10 @@ class Board
 
   #This is a helper method for .randomly_place
   def random_cells(ship)
-    length = ship.length
-    cell_options = cells.keys
-    placement = cell_options.sample(length)
-
+    options = cells.keys
+    placement = options.sample(ship.length) #sample size equal to ship size
     until valid_placement?(ship, placement) 
-      placement = cell_options.sample(length)
+      placement = options.sample(ship.length)
     end
     placement
   end
