@@ -3,7 +3,7 @@ class NewGame
   def main_menu
     puts "Welcome to BATTLESHIP \n" +
          "Enter p to play. Enter q to quit."
-    @response = gets.chomp
+    @response = gets.chomp.strip.downcase
     if @response == 'p'
       play
     elsif @response == 'q'
@@ -20,9 +20,10 @@ class NewGame
 
     computer_place_ships
     player_place_ships
-    until @player_cruiser.sunk? && @player_submarine.sunk? || @computer_cruiser.sunk? && @computer_submarine.sunk?
+    until (@player_cruiser.sunk? && @player_submarine.sunk?) || (@computer_cruiser.sunk? && @computer_submarine.sunk?)
       take_turns
     end
+    end_of_game
   end
 
   def computer_place_ships
@@ -37,13 +38,13 @@ class NewGame
          "You now need to lay out your two ships. \n" +
          "The Cruiser is three units long and the Submarine is two units long."
     puts @player_board.render
-    place_cruiser
+    place_cruiser 
     place_submarine
   end
 
   def place_cruiser
     puts "Enter the squares for the Cruiser (3 spaces):"
-    cruiser_placement = gets.chomp.split.to_a
+    cruiser_placement = gets.chomp.strip.upcase.split.to_a
     @player_cruiser = Ship.new("Cruiser", 3)
     if @player_board.valid_placement?(@player_cruiser, cruiser_placement)
       @player_board.place(@player_cruiser, cruiser_placement)
@@ -56,11 +57,12 @@ class NewGame
 
   def place_submarine
     puts "Enter the squares for the Submarine (2 spaces):"
-    submarine_placement = gets.chomp.split.to_a
+    submarine_placement = gets.chomp.strip.upcase.split.to_a
     @player_submarine = Ship.new("Submarine", 2)
     if @player_board.valid_placement?(@player_submarine, submarine_placement)
       @player_board.place(@player_submarine, submarine_placement)
       # puts @player_board.render(true)
+      # left in for possible addition for more ship stuff
     else 
       puts "Those are invalid coordinates. Please try again."
       place_submarine
@@ -73,12 +75,12 @@ class NewGame
     puts "==============PLAYER BOARD=============="
     puts @player_board.render(true)
     player_shot
-    computer_shot
+    computer_shot if (@computer_cruiser.sunk? && @computer_submarine.sunk?) == false
   end
 
   def player_shot
     puts "Choose a coordinate to fire at:"
-    shot_at = gets.chomp
+    shot_at = gets.chomp.strip.upcase
     cell = @computer_board.cells[shot_at]
     if !@computer_board.valid_coordinate?(shot_at)
       puts "Please enter a valid coordinate."
@@ -86,12 +88,10 @@ class NewGame
     elsif cell.fired_upon?
       puts "Oops! You already fired at #{shot_at}."
       player_shot
-    else #@computer_board.valid_coordinate?(shot_at)
+    else
       cell.fire_upon
       puts "Your shot on #{shot_at} was a #{hit_miss_sink(cell)}."
     end
-
-    end_of_game if @computer_cruiser.sunk? && @computer_submarine.sunk?
   end
 
   def computer_shot
@@ -102,7 +102,6 @@ class NewGame
     cell = @player_board.cells[random_cell]
     cell.fire_upon
     puts "My shot on #{cell.coordinate} was a #{hit_miss_sink(cell)}."
-    end_of_game if @player_cruiser.sunk? && @player_submarine.sunk?
   end
 
   #This is a helper method for describing the shots
@@ -122,8 +121,6 @@ class NewGame
     elsif @computer_cruiser.sunk? && @computer_submarine.sunk?
       puts "\u{1F389} Congrats! You won!! \u{1F3C6}"
     end
-    puts "Press ENTER to return to the main menu"
-    gets
     main_menu
   end
 end
