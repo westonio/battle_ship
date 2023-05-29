@@ -1,8 +1,10 @@
 class Board
-  attr_reader :cells
+  attr_reader :cells,
+              :shots_taken
 
   def initialize
     @cells = create_cells
+    @shots_taken = []
   end
 
   def create_cells
@@ -118,5 +120,9 @@ class Board
       placement = cell_options.sample(length)
     end
     placement
+  end
+
+  def track_shot(cell)
+    @shots_taken << cell
   end
 end
