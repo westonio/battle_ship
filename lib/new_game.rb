@@ -7,7 +7,7 @@ class NewGame
     if @response == 'p'
       play
     elsif @response == 'q'
-      puts "Thank you for playing BATTLESHIP!"
+      abort("Thank you for playing BATTLESHIP!") # kill script so it ignores the computer trying to take its turn anyway.
     else 
       puts 'Invalid Input Please use either p or q.'
       main_menu
@@ -20,7 +20,7 @@ class NewGame
 
     computer_place_ships
     player_place_ships
-    until @player_cruiser.sunk? && @player_submarine.sunk? || @computer_cruiser.sunk? && @computer_submarine.sunk?
+    until (@player_cruiser.sunk? && @player_submarine.sunk?) || (@computer_cruiser.sunk? && @computer_submarine.sunk?)
       take_turns
     end
   end
@@ -61,6 +61,7 @@ class NewGame
     if @player_board.valid_placement?(@player_submarine, submarine_placement)
       @player_board.place(@player_submarine, submarine_placement)
       # puts @player_board.render(true)
+      # left in for possible addition for more ship stuff
     else 
       puts "Those are invalid coordinates. Please try again."
       place_submarine
@@ -86,7 +87,7 @@ class NewGame
     elsif cell.fired_upon?
       puts "Oops! You already fired at #{shot_at}."
       player_shot
-    else #@computer_board.valid_coordinate?(shot_at)
+    else
       cell.fire_upon
       puts "Your shot on #{shot_at} was a #{hit_miss_sink(cell)}."
     end
@@ -122,8 +123,8 @@ class NewGame
     elsif @computer_cruiser.sunk? && @computer_submarine.sunk?
       puts "\u{1F389} Congrats! You won!! \u{1F3C6}"
     end
-    puts "Press ENTER to return to the main menu"
-    gets
     main_menu
   end
+
+  # end of class
 end
