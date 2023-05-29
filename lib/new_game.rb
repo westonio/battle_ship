@@ -71,6 +71,7 @@ class NewGame
     puts "==============PLAYER BOARD=============="
     puts @player_board.render(true)
     player_shot
+    computer_shot
     until @player_cruiser.sunk? && @player_submarine.sunk? || @computer_cruiser.sunk? && @computer_submarine.sunk?
       take_turns
     end
@@ -88,6 +89,17 @@ class NewGame
       puts "Please enter a valid coordinate:"
       player_shot
     end
+  end
+
+  def computer_shot
+    random_cell = @player_board.cells.keys.sample
+    until !@player_board.shots_taken.include?(random_cell)
+      random_cell = @player_board.cells.keys.sample
+    end
+    cell = @player_board.cells[random_cell]
+    cell.fire_upon
+    @player_board.track_shot(cell.coordinate)
+    puts "My shot on #{cell.coordinate} was a #{hit_miss_sink(cell)}."
   end
 
   #This is a helper method for describing the shots
