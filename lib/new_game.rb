@@ -20,7 +20,9 @@ class NewGame
 
     computer_place_ships
     player_place_ships
-    take_turns
+    until @player_cruiser.sunk? && @player_submarine.sunk? || @computer_cruiser.sunk? && @computer_submarine.sunk?
+      take_turns
+    end
   end
 
   def computer_place_ships
@@ -58,7 +60,7 @@ class NewGame
     @player_submarine = Ship.new("Submarine", 2)
     if @player_board.valid_placement?(@player_submarine, submarine_placement)
       @player_board.place(@player_submarine, submarine_placement)
-      puts @player_board.render(true)
+      # puts @player_board.render(true)
     else 
       puts "Those are invalid coordinates. Please try again."
       place_submarine
@@ -72,38 +74,35 @@ class NewGame
     puts @player_board.render(true)
     player_shot
     computer_shot
-    until @player_cruiser.sunk? && @player_submarine.sunk? || @computer_cruiser.sunk? && @computer_submarine.sunk?
-      take_turns
-    end
   end
 
   def player_shot
     puts "Choose a coordinate to fire at:"
     shot_at = gets.chomp
-    if @computer_board.shots_taken.include?(shot_at)
-      puts "Oops! You already fired at #{shot_at}."
-      player_shot
-    end
-    if @computer_board.valid_coordinate?(shot_at)
-      cell = @computer_board.cells[shot_at]
-      @computer_board.track_shot(cell.coordinate)
-      cell.fire_upon
-      puts "Your shot on #{shot_at} was a #{hit_miss_sink(cell)}."
-    else
+    cell = @computer_board.cells[shot_at]
+    if !@computer_board.valid_coordinate?(shot_at)
       puts "Please enter a valid coordinate."
       player_shot
+    elsif cell.fired_upon?
+      puts "Oops! You already fired at #{shot_at}."
+      player_shot
+    else #@computer_board.valid_coordinate?(shot_at)
+      cell.fire_upon
+      puts "Your shot on #{shot_at} was a #{hit_miss_sink(cell)}."
     end
+
+    end_of_game if @computer_cruiser.sunk? && @computer_submarine.sunk?
   end
 
   def computer_shot
     random_cell = @player_board.cells.keys.sample
-    until !@player_board.shots_taken.include?(random_cell)
+    until !@player_board.cells[random_cell].fired_upon?
       random_cell = @player_board.cells.keys.sample
     end
     cell = @player_board.cells[random_cell]
     cell.fire_upon
-    @player_board.track_shot(cell.coordinate)
     puts "My shot on #{cell.coordinate} was a #{hit_miss_sink(cell)}."
+    end_of_game if @player_cruiser.sunk? && @player_submarine.sunk?
   end
 
   #This is a helper method for describing the shots
@@ -115,5 +114,16 @@ class NewGame
     elsif cell.render == "X"
       "hit and sunk the #{cell.ship.name} \u{1F62D}"
     end
+  end
+
+  def end_of_game
+    if @player_cruiser.sunk? && @player_submarine.sunk?
+      puts "I won! Better luck next time \u{1F61C}"
+    elsif @computer_cruiser.sunk? && @computer_submarine.sunk?
+      puts "\u{1F389} Congrats! You won!! \u{1F3C6}"
+    end
+    puts "Press ENTER to return to the main menu"
+    gets
+    main_menu
   end
 end
