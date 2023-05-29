@@ -20,6 +20,7 @@ class NewGame
 
     computer_place_ships
     player_place_ships
+    take_turns
   end
 
   def computer_place_ships
@@ -64,7 +65,39 @@ class NewGame
     end
   end
 
+  def take_turns
+    puts "=============COMPUTER BOARD============="
+    puts @computer_board.render
+    puts "==============PLAYER BOARD=============="
+    puts @player_board.render(true)
+    player_shot
+    until @player_cruiser.sunk? && @player_submarine.sunk? || @computer_cruiser.sunk? && @computer_submarine.sunk?
+      take_turns
+    end
+  end
 
+  def player_shot
+    puts "Choose a coordinate to fire at:"
+    shot_at = gets.chomp
+    if @computer_board.valid_coordinate?(shot_at) && !@computer_board.shots_taken.include?(shot_at)
+      cell = @computer_board.cells[shot_at]
+      @computer_board.track_shot(cell.coordinate)
+      cell.fire_upon
+      puts "Your shot on #{shot_at} was a #{hit_miss_sink(cell)}."
+    else
+      puts "Please enter a valid coordinate:"
+      player_shot
+    end
+  end
 
-  
+  #This is a helper method for describing the shots
+  def hit_miss_sink(cell)
+    if cell.render == "M"
+      "miss"
+    elsif cell.render == "H"
+      "hit"
+    elsif cell.render == "X"
+      "hit and sunk the #{cell.ship.name} \u{1F62D}"
+    end
+  end
 end
