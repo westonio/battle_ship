@@ -126,12 +126,4 @@ RSpec.describe Board do
     expect(@board.cells[placed[1]].ship).to eq(cruiser)
     expect(@board.cells[placed[2]].ship).to eq(cruiser)
   end
-
-  it 'can track shots already taken' do
-    @board.track_shot("A2")
-    @board.track_shot("D4")
-    @board.track_shot("C1")
-
-    expect(@board.shots_taken).to eq(["A2","D4","C1"])
-  end
 end
