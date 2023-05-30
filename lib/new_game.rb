@@ -7,7 +7,7 @@ class NewGame
     if @response == 'p'
       play
     elsif @response == 'q'
-      abort("Thank you for playing BATTLESHIP!") # kill script so it ignores the computer trying to take its turn anyway.
+      "Thank you for playing BATTLESHIP!"
     else 
       puts 'Invalid Input Please use either p or q.'
       main_menu
@@ -121,6 +121,8 @@ class NewGame
     elsif @computer_cruiser.sunk? && @computer_submarine.sunk?
       puts "\u{1F389} Congrats! You won!! \u{1F3C6}"
     end
+    puts "Hit ENTER to return to the Main Menu"
+    gets.chomp
     main_menu
   end
 
