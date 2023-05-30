@@ -1,17 +1,36 @@
 class Board
-  attr_reader :cells
+  attr_reader :cells, :size
 
-  def initialize
+  def initialize(size)
+    @size = size
     @cells = create_cells
   end
 
   def create_cells
-    keys = ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"]
+    keys = create_keys
     cells = {}
     keys.map do |key|
       cells[key] = Cell.new(key)
     end
     cells
+  end
+
+  # this is a helper for .create_cells
+  def create_keys
+    letters = ("A"..last_letter).to_a
+    keys = []
+    letters.each do |letter|
+      (1..@size).each do |num|
+        keys << "#{letter}#{num}"
+      end
+    end
+    keys
+  end
+
+#this is a helper for create_keys and letter_possibilities
+  def last_letter
+    all_letters = ("A".."J").to_a
+    all_letters[@size - 1]
   end
 
   def valid_coordinate?(coordinate)
@@ -35,10 +54,12 @@ class Board
 
   def consecutive?(ship, coordinates)
     #separate letters and numbers
-    separate_chars = coordinates.map do |coordinate|
-      coordinate.chars
+    letters = []
+    numbers = []
+    coordinates.each do |coordinate|
+      letters << coordinate[0]
+      numbers << coordinate[1..2]
     end
-    letters, numbers = separate_chars.transpose
     #run through helper methods to determine if sequence valid
     if letters.uniq.length == 1
       number_possibilities(ship).any? do |valid_arrays|
@@ -54,7 +75,7 @@ class Board
   #This is a helper method for .consecutive?
   def letter_possibilities(ship) 
     letters = []
-    ("A".."D").each_cons(ship.length) do |valid_letters|
+    ("A"..last_letter).each_cons(ship.length) do |valid_letters|
       letters << valid_letters
     end
     letters
@@ -63,7 +84,7 @@ class Board
   #This is a helper method for .consecutive?
   def number_possibilities(ship)
     numbers = [] 
-    ("1".."4").each_cons(ship.length) do |valid_nums|
+    ("1"..@size.to_s).each_cons(ship.length) do |valid_nums|
       numbers << valid_nums
     end
     numbers
