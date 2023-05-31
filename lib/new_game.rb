@@ -80,18 +80,17 @@ class NewGame
   end
 
   def player_shot
-    puts "Choose a coordinate to fire at:"
-    shot_at = gets.chomp.strip.upcase
-    cell = @computer_board.cells[shot_at]
-    if !@computer_board.valid_coordinate?(shot_at)
-      puts "Please enter a valid coordinate."
+    shoot_at = @player_interface.choose_coordinate
+    cell = @computer_board.cells[shoot_at]
+    if !@computer_board.valid_coordinate?(shoot_at)
+      @player_interface.invalid_shot # puts invalid statement
       player_shot
     elsif cell.fired_upon?
-      puts "Oops! You already fired at #{shot_at}."
+      @player_interface.already_shot_at(shoot_at)
       player_shot
     else
       cell.fire_upon
-      puts "Your shot on #{shot_at} was a #{hit_miss_sink(cell)}."
+      @player_interface.player_render_shot(cell)
     end
   end
 
@@ -102,28 +101,16 @@ class NewGame
     end
     cell = @player_board.cells[random_cell]
     cell.fire_upon
-    puts "My shot on #{cell.coordinate} was a #{hit_miss_sink(cell)}."
-  end
-
-  #This is a helper method for describing the shots
-  def hit_miss_sink(cell)
-    if cell.render == "M"
-      "miss"
-    elsif cell.render == "H"
-      "hit"
-    elsif cell.render == "X"
-      "hit and sunk the #{cell.ship.name} \u{1F62D}"
-    end
+    @player_interface.computer_render_shot(cell)
   end
 
   def end_of_game
     if @player_ships.all?(&:sunk?)
-      puts "I won! Better luck next time \u{1F61C}"
+      @player_interface.computer_won
     elsif @computer_ships.all?(&:sunk?)
-      puts "\u{1F389} Congrats! You won!! \u{1F3C6}"
+      @player_interface.player_won
     end
-    puts "Hit ENTER to return to the Main Menu"
-    gets.chomp
+    @player_interface.return_to_menu
     main_menu
   end
 

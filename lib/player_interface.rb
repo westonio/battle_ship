@@ -77,10 +77,55 @@ class PlayerInterface
 # Take Turns
   def render_board(computer_board, player_board)
     puts "=============COMPUTER BOARD============="
-    puts computer_board.render
+    puts computer_board.render(true)
     puts "==============PLAYER BOARD=============="
     puts player_board.render(true)
   end
 
+# Player Shots
+  def choose_coordinate
+    puts "Choose a coordinate to fire at:"
+    gets.chomp.strip.upcase
+  end
 
+  def invalid_shot
+    puts "Please enter a valid coordinate."
+  end
+
+  def already_shot_at(shoot_at)
+    puts "Oops! You already fired at #{shoot_at}."
+  end
+
+  def player_render_shot(cell)
+    puts "Your shot on #{cell.coordinate} was a #{hit_miss_sink(cell)}."
+  end
+
+  def computer_render_shot(cell)
+    puts "My shot on #{cell.coordinate} was a #{hit_miss_sink(cell)}."
+  end
+
+  #This is a helper method for describing the shots
+  def hit_miss_sink(cell)
+    if cell.render == "M"
+      "miss"
+    elsif cell.render == "H"
+      "hit"
+    elsif cell.render == "X"
+      "hit and sunk the #{cell.ship.name} \u{1F62D}"
+    end
+  end
+
+# End of Game
+  def computer_won
+    puts "\nI won! Better luck next time \u{1F61C}"
+  end
+
+  def player_won
+    puts "\n\u{1F389} Congrats! You won!! \u{1F3C6}"
+  end
+
+  def return_to_menu
+    puts "\nHit ENTER to return to the Main Menu"
+    gets.chomp
+  end
 end
