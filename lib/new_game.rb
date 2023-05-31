@@ -18,7 +18,7 @@ class NewGame
 
   def play
     build_board
-    @player_ships, @computer_ships = create_ships(num_ships)
+    create_ships(@player_interface.get_ship_count)
     player_place_ships
     computer_place_ships
     until @player_ships.all?(&:sunk?) || @computer_ships.all?(&:sunk?)
@@ -32,15 +32,6 @@ class NewGame
     @size = @player_interface.get_board_size
     @computer_board = Board.new(@size)
     @player_board = Board.new(@size)
-  end
-
-  def num_ships
-    ship_count = @player_interface.get_ship_count
-    if ship_count < 1 || ship_count.nil?
-      @player_interface.invalid_ship_count #puts invalid statement
-      num_ships
-    end
-    ship_count
   end
 
   def create_ships(count)
