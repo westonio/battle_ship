@@ -31,13 +31,19 @@ class PlayerInterface
   end
 
 # Ship Count
+  # def get_ship_count
+  #   puts "Enter the number of ships to create:"
+  #   gets.chomp.to_i
+  # end
+
   def get_ship_count
     puts "Enter the number of ships to create:"
-    gets.chomp.to_i
-  end
-
-  def invalid_ship_count
-    puts 'Invalid Input. Must create at least one ship.'
+    @ship_count = gets.chomp.to_i
+    if @ship_count < 1 || @ship_count.nil? || @ship_count > 5
+      puts 'Invalid Input. Must create at least one ship but less than 5.'
+      get_ship_count
+    end
+    @ship_count
   end
 
 # Create Ships
