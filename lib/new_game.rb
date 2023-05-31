@@ -15,15 +15,53 @@ class NewGame
   end
 
   def play
+    @computer_board = Board.new
+    @player_board = Board.new
+
+    puts "Enter the number of ships you want to create:"
+    ship_count = gets.chomp.to_i
+    if ship_count < 1
+    puts 'Invalid Input. Must create at least one ship.'
+      play
+    end
+
+    @player_ships, @computer_ships = create_ships(ship_count)
     build_board
-    computer_place_ships
     player_place_ships
-    until (@player_cruiser.sunk? && @player_submarine.sunk?) || (@computer_cruiser.sunk? && @computer_submarine.sunk?)
+    computer_place_ships
+
+    until @player_ships.all?(&:sunk?) || @computer_ships.all?(&:sunk?)
       take_turns
     end
     end_of_game
   end
 
+  def create_ships(count)
+    player_ships = []
+    computer_ships = []
+    count.times do |i|
+      puts "Enter the name for Ship #{i + 1}:"
+      name = gets.chomp.strip
+      while name.nil? || name.empty?
+        puts "Name cannot be empty."
+        puts "Enter the name for Ship #{i + 1}:"
+        name = gets.chomp.strip
+      end
+
+      puts "Enter the length for the #{name}:"
+      length = gets.chomp.to_i
+      while length <= 1
+        puts "Please enter a length greater than 1."
+        puts "Enter the length for the #{name}:"
+        length = gets.chomp.to_i
+      end
+      
+      player_ships << Ship.new(name, length)
+      computer_ships << Ship.new(name, length)
+    end
+    [player_ships, computer_ships]
+  end
+  
   def build_board
     puts  "Let's build your game board! \n" +
           "The game board can be 4x4 squares up to 10x10 squares"
@@ -42,56 +80,34 @@ class NewGame
     size
   end
 
-  def computer_place_ships
-    @computer_cruiser = Ship.new("Cruiser", 3)
-    @computer_submarine = Ship.new("Submarine", 2)
-    @computer_board.randomly_place(@computer_cruiser)
-    @computer_board.randomly_place(@computer_submarine)
-  end
-
   def player_place_ships
-    puts "I have laid out my ships on the grid. \n" +
-         "You now need to lay out your two ships. \n" +
-         "The Cruiser is three units long and the Submarine is two units long."
-    puts @player_board.render
-    place_cruiser 
-    place_submarine
+    @player_ships.each { |ship| place_ship(ship) }
   end
 
-  def place_cruiser
-    puts "Enter the squares for the Cruiser (3 spaces):"
-    cruiser_placement = gets.chomp.strip.upcase.split.to_a
-    @player_cruiser = Ship.new("Cruiser", 3)
-    if @player_board.valid_placement?(@player_cruiser, cruiser_placement)
-      @player_board.place(@player_cruiser, cruiser_placement)
+  def computer_place_ships
+    @computer_ships.each { |ship| @computer_board.randomly_place(ship) }
+  end
+
+  def place_ship(ship)
+    puts "Enter the squares for the #{ship.name} (#{ship.length} spaces):"
+    puts @player_board.render(true)
+    ship_placement = gets.chomp.strip.upcase.split.to_a
+    if @player_board.valid_placement?(ship, ship_placement)
+      @player_board.place(ship, ship_placement)
       puts @player_board.render(true)
     else 
       puts "Those are invalid coordinates. Please try again."
-      place_cruiser
-    end
-  end
-
-  def place_submarine
-    puts "Enter the squares for the Submarine (2 spaces):"
-    submarine_placement = gets.chomp.strip.upcase.split.to_a
-    @player_submarine = Ship.new("Submarine", 2)
-    if @player_board.valid_placement?(@player_submarine, submarine_placement)
-      @player_board.place(@player_submarine, submarine_placement)
-      # puts @player_board.render(true)
-      # left in for possible addition for more ship stuff
-    else 
-      puts "Those are invalid coordinates. Please try again."
-      place_submarine
+      place_ship(ship)
     end
   end
 
   def take_turns
     puts "=============COMPUTER BOARD============="
-    puts @computer_board.render
+    puts @computer_board.render(true)
     puts "==============PLAYER BOARD=============="
     puts @player_board.render(true)
     player_shot
-    computer_shot if (@computer_cruiser.sunk? && @computer_submarine.sunk?) == false
+    computer_shot unless @computer_ships.all?(&:sunk?)
   end
 
   def player_shot
@@ -132,9 +148,9 @@ class NewGame
   end
 
   def end_of_game
-    if @player_cruiser.sunk? && @player_submarine.sunk?
+    if @player_ships.all?(&:sunk?)
       puts "I won! Better luck next time \u{1F61C}"
-    elsif @computer_cruiser.sunk? && @computer_submarine.sunk?
+    elsif @computer_ships.all?(&:sunk?)
       puts "\u{1F389} Congrats! You won!! \u{1F3C6}"
     end
     puts "Hit ENTER to return to the Main Menu"
