@@ -15,18 +15,11 @@ class NewGame
   end
 
   def play
-    @computer_board = Board.new
-    @player_board = Board.new
-
-    puts "Enter the number of ships you want to create:"
-    ship_count = gets.chomp.to_i
-    if ship_count < 1
-    puts 'Invalid Input. Must create at least one ship.'
-      play
-    end
-
-    @player_ships, @computer_ships = create_ships(ship_count)
     build_board
+    num_ships
+
+
+    @player_ships, @computer_ships = create_ships(@ship_count)
     player_place_ships
     computer_place_ships
 
@@ -34,6 +27,15 @@ class NewGame
       take_turns
     end
     end_of_game
+  end
+
+  def num_ships
+    puts "Enter the number of ships you want to create:"
+    @ship_count = gets.chomp.to_i
+    if @ship_count < 1 || @ship_count.nil?
+    puts 'Invalid Input. Must create at least one ship.'
+      num_ships
+    end
   end
 
   def create_ships(count)
@@ -50,8 +52,8 @@ class NewGame
 
       puts "Enter the length for the #{name}:"
       length = gets.chomp.to_i
-      while length <= 1
-        puts "Please enter a length greater than 1."
+      while (length <= 1) || (length > @size)
+        puts "Please enter a length greater than 1 and less than the board size."
         puts "Enter the length for the #{name}:"
         length = gets.chomp.to_i
       end
@@ -65,19 +67,19 @@ class NewGame
   def build_board
     puts  "Let's build your game board! \n" +
           "The game board can be 4x4 squares up to 10x10 squares"
-    size = get_board_size
-    @computer_board = Board.new(size)
-    @player_board = Board.new(size)
+    @size = get_board_size
+    @computer_board = Board.new(@size)
+    @player_board = Board.new(@size)
   end
 
   def get_board_size
     puts "Please enter the number of rows and colums you want (min of 4 & max of 10):"
-    size = gets.chomp.strip.to_i
-    if size < 4 || size > 10
+    @size = gets.chomp.strip.to_i
+    if @size < 4 || @size > 10
       puts "Please enter a valid number between 4 and 10:"
       get_board_size
     end
-    size
+    @size
   end
 
   def player_place_ships
@@ -94,7 +96,6 @@ class NewGame
     ship_placement = gets.chomp.strip.upcase.split.to_a
     if @player_board.valid_placement?(ship, ship_placement)
       @player_board.place(ship, ship_placement)
-      puts @player_board.render(true)
     else 
       puts "Those are invalid coordinates. Please try again."
       place_ship(ship)
@@ -103,7 +104,7 @@ class NewGame
 
   def take_turns
     puts "=============COMPUTER BOARD============="
-    puts @computer_board.render(true)
+    puts @computer_board.render
     puts "==============PLAYER BOARD=============="
     puts @player_board.render(true)
     player_shot
