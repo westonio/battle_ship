@@ -20,6 +20,10 @@ class NewGame
 
     puts "Enter the number of ships you want to create:"
     ship_count = gets.chomp.to_i
+    if ship_count < 1
+    puts 'Invalid Input. Must create at least one ship.'
+      play
+    end
 
     @player_ships, @computer_ships = create_ships(ship_count)
     player_place_ships
@@ -37,8 +41,20 @@ class NewGame
     count.times do |i|
       puts "Enter the name for Ship #{i + 1}:"
       name = gets.chomp.strip
-      puts "Enter the length for Ship #{i + 1}:"
+      while name.nil? || name.empty?
+        puts "Name cannot be empty."
+        puts "Enter the name for Ship #{i + 1}:"
+        name = gets.chomp.strip
+      end
+
+      puts "Enter the length for the #{name}:"
       length = gets.chomp.to_i
+      while length <= 1
+        puts "Please enter a length greater than 1."
+        puts "Enter the length for the #{name}:"
+        length = gets.chomp.to_i
+      end
+      
       player_ships << Ship.new(name, length)
       computer_ships << Ship.new(name, length)
     end
