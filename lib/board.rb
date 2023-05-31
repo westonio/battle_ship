@@ -1,17 +1,36 @@
 class Board
-  attr_reader :cells
+  attr_reader :cells, :size
 
-  def initialize
+  def initialize(size)
+    @size = size
     @cells = create_cells
   end
 
   def create_cells
-    keys = ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"]
+    keys = create_keys
     cells = {}
     keys.map do |key|
       cells[key] = Cell.new(key)
     end
     cells
+  end
+
+  # this is a helper for .create_cells
+  def create_keys
+    letters = ("A"..last_letter).to_a
+    keys = []
+    letters.each do |letter|
+      (1..@size).each do |num|
+        keys << "#{letter}#{num}"
+      end
+    end
+    keys
+  end
+
+#this is a helper for create_keys and letter_possibilities
+  def last_letter
+    all_letters = ("A".."J").to_a
+    all_letters[@size - 1]
   end
 
   def valid_coordinate?(coordinate)
@@ -35,10 +54,12 @@ class Board
 
   def consecutive?(ship, coordinates)
     #separate letters and numbers
-    separate_chars = coordinates.map do |coordinate|
-      coordinate.chars
+    letters = []
+    numbers = []
+    coordinates.each do |coordinate|
+      letters << coordinate[0]
+      numbers << coordinate[1..2]
     end
-    letters, numbers = separate_chars.transpose
     #run through helper methods to determine if sequence valid
     if letters.uniq.length == 1
       number_possibilities(ship).any? do |valid_arrays|
@@ -54,7 +75,7 @@ class Board
   #This is a helper method for .consecutive?
   def letter_possibilities(ship) 
     letters = []
-    ("A".."D").each_cons(ship.length) do |valid_letters|
+    ("A"..last_letter).each_cons(ship.length) do |valid_letters|
       letters << valid_letters
     end
     letters
@@ -63,7 +84,7 @@ class Board
   #This is a helper method for .consecutive?
   def number_possibilities(ship)
     numbers = [] 
-    ("1".."4").each_cons(ship.length) do |valid_nums|
+    ("1"..@size.to_s).each_cons(ship.length) do |valid_nums|
       numbers << valid_nums
     end
     numbers
@@ -84,21 +105,38 @@ class Board
     end
   end
 
-  def render(reveal_board = false)
-    if reveal_board 
-      "  1 2 3 4 \n" +
-      "A #{cells["A1"].render(true)} #{cells["A2"].render(true)} #{cells["A3"].render(true)} #{cells["A4"].render(true)} \n" +
-      "B #{cells["B1"].render(true)} #{cells["B2"].render(true)} #{cells["B3"].render(true)} #{cells["B4"].render(true)} \n" +
-      "C #{cells["C1"].render(true)} #{cells["C2"].render(true)} #{cells["C3"].render(true)} #{cells["C4"].render(true)} \n" +
-      "D #{cells["D1"].render(true)} #{cells["D2"].render(true)} #{cells["D3"].render(true)} #{cells["D4"].render(true)} \n"
-
+  def render(reveal_board = false) 
+    if reveal_board
+      "#{line_1} \n" +
+      "#{other_lines(reveal_board)}"
     else
-      "  1 2 3 4 \n" +
-      "A #{cells["A1"].render} #{cells["A2"].render} #{cells["A3"].render} #{cells["A4"].render} \n" +
-      "B #{cells["B1"].render} #{cells["B2"].render} #{cells["B3"].render} #{cells["B4"].render} \n" +
-      "C #{cells["C1"].render} #{cells["C2"].render} #{cells["C3"].render} #{cells["C4"].render} \n" +
-      "D #{cells["D1"].render} #{cells["D2"].render} #{cells["D3"].render} #{cells["D4"].render} \n"
+      "#{line_1} \n" +
+      "#{other_lines(reveal_board)}"
     end
+  end
+
+  def line_1
+    string = " "
+    (1..size).each do |num|
+      string += " #{num}"
+    end
+    string
+  end
+
+  def other_lines(reveal_board)
+    letters = ("A"..last_letter).to_a
+    string = ""
+    letters.each do |letter|
+      string += "#{letter}"
+      letter_keys = create_keys.select do |key|
+        key[0] == letter
+      end
+      letter_keys.map do |key|
+        string += " #{cells[key].render(reveal_board)}"
+      end 
+      string += " \n"
+    end
+    string
   end
 
   def randomly_place(ship)

@@ -15,15 +15,31 @@ class NewGame
   end
 
   def play
-    @computer_board = Board.new
-    @player_board = Board.new
-
+    build_board
     computer_place_ships
     player_place_ships
     until (@player_cruiser.sunk? && @player_submarine.sunk?) || (@computer_cruiser.sunk? && @computer_submarine.sunk?)
       take_turns
     end
     end_of_game
+  end
+
+  def build_board
+    puts  "Let's build your game board! \n" +
+          "The game board can be 4x4 squares up to 10x10 squares"
+    size = get_board_size
+    @computer_board = Board.new(size)
+    @player_board = Board.new(size)
+  end
+
+  def get_board_size
+    puts "Please enter the number of rows and colums you want (min of 4 & max of 10):"
+    size = gets.chomp.strip.to_i
+    if size < 4 || size > 10
+      puts "Please enter a valid number between 4 and 10:"
+      get_board_size
+    end
+    size
   end
 
   def computer_place_ships
