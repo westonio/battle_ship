@@ -39,29 +39,40 @@ RSpec.describe Board do
     it 'can only place cells equal to length of ship' do
       cruiser = Ship.new("Cruiser", 3)
 
-      expect(@four_board.valid_placement?(cruiser, ["A1", "A2"])).to be(false)
-      expect(@four_board.valid_placement?(cruiser, ["A1", "A2", "A3", "A4"])).to be(false)
-      expect(@four_board.valid_placement?(cruiser, ["A2", "A3", "A4"])).to be(true)
+      expect(@four_board.same_length?(cruiser, ["A1", "A2"])).to be(false)
+      expect(@four_board.same_length?(cruiser, ["A1", "A2", "A3", "A4"])).to be(false)
+      expect(@four_board.same_length?(cruiser, ["A2", "A3", "A4"])).to be(true)
     end
 
     it 'can be placed verticaly or horizonatally only' do
-      cruiser = Ship.new("Cruiser", 3)
-
-      expect(@four_board.valid_placement?(cruiser, ["A1", "B2", "C3"])).to be(false)
-      expect(@four_board.valid_placement?(cruiser, ["A1", "A2", "A3"])).to be(true)
-      expect(@four_board.valid_placement?(cruiser, ["B2", "C2", "D2"])).to be(true)
+      expect(@four_board.not_diagonal?(["A1", "B2", "C3"])).to be(false)
+      expect(@four_board.not_diagonal?(["A1", "A2", "A3"])).to be(true)
+      expect(@four_board.not_diagonal?(["B2", "C2", "D2"])).to be(true)
     end
 
     it 'can only be placed in consecutive order' do
       cruiser = Ship.new("Cruiser", 3)
 
-      expect(@four_board.valid_placement?(cruiser, ["A1", "A2", "A4"])).to be(false)
-      expect(@four_board.valid_placement?(cruiser, ["A3", "A2", "A1"])).to be(false)
-      expect(@four_board.valid_placement?(cruiser, ["B2", "C2", "D2"])).to be(true)
+      expect(@four_board.consecutive?(cruiser, ["A1", "A2", "A4"])).to be(false)
+      expect(@four_board.consecutive?(cruiser, ["A3", "A2", "A1"])).to be(false)
+      expect(@four_board.consecutive?(cruiser, ["B2", "C2", "D2"])).to be(true)
+      expect(@four_board.consecutive?(cruiser, ["C1", "C2", "C3"])).to be(true)
+    end
+
+    it 'can verify valid placemet' do
+      cruiser = Ship.new("Cruiser", 3)
+
+      expect(@four_board.valid_placement?(cruiser, ["A1", "A2"])).to be(false) # incorrect length
+      expect(@four_board.valid_placement?(cruiser, ["A1", "B2", "C3"])).to be(false) # diagonal
+      expect(@four_board.valid_placement?(cruiser, ["A3", "A2", "A1"])).to be(false) # not consecutive
+      
+      expect(@four_board.valid_placement?(cruiser, ["A2", "A3", "A4"])).to be(true) 
+      expect(@four_board.valid_placement?(cruiser, ["B2", "C2", "D2"])).to be(true) 
       expect(@four_board.valid_placement?(cruiser, ["C1", "C2", "C3"])).to be(true)
+
     end
   end
-
+  
   it 'can place ship on board' do
     cruiser = Ship.new("Cruiser", 3)
     cell_1 = @four_board.cells["A1"]
