@@ -1,4 +1,5 @@
 class NewGame
+  attr_reader :player_interface
 
   def initialize
     @player_interface = PlayerInterface.new
