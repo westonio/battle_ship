@@ -30,12 +30,6 @@ class PlayerInterface
     size
   end
 
-# Ship Count
-  # def get_ship_count
-  #   puts "Enter the number of ships to create:"
-  #   gets.chomp.to_i
-  # end
-
   def get_ship_count
     puts "Enter the number of ships to create:"
     @ship_count = gets.chomp.to_i
