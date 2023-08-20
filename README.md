@@ -7,7 +7,7 @@ Welcome to our Battleship game implemented in Ruby! This project is a collaborat
 - **Built with:** Ruby
 - **Tested with:** RSpec
 - **Tools / Workflow:** Git, GitHub, GitHub Projects, Driver-Navigator Pair Programming
-
+---
 ### Features
 - **Dynamic Board Size:** Our Battleship game offers the flexibility to choose the dimensions of the game board. Players can specify the number of rows and columns they want (up to 10), tailoring the experience to their preference.
 - **Custom Ship Configuration:** Players can also set the number, size, and name of the ships that will be placed on the board. This feature allows for a customizable game experience, ensuring excitement for players of all skill levels.
@@ -18,7 +18,7 @@ Welcome to our Battleship game implemented in Ruby! This project is a collaborat
 ### Project Challenges:
 - Working collaboratively using the driver-navigator style required effective communication and synchronization among team members. Coordinating coding sessions, ensuring consistent coding style, and resolving merge conflicts in the version control system were challenges we had to overcome.
 - Designing a game that allowed players to dynamically set the board dimensions and customize the ship configuration presented challenges in terms of validation and ensuring the game's rules were upheld. We needed to handle edge cases, such as when the board size was too small for the specified ship sizes or when the total ship area exceeded the board area.
-- Developing a Battleship game with multiple layers of logic, including board setup, ship placement, and hit detection, posed a challenge in terms of writing comprehensive unit tests. We had to ensure that our test suite covered all possible scenarios, interactions, and edge cases to provide confidence in the game's functionality.
+- Developing a Battleship game with multiple layers of logic, including board setup, ship placement, and hit detection, posed a challenge in terms of writing comprehensive unit tests. We had to ensure that our test suite covered all possible scenarios, interactions, and edge cases to provide confidence in the game's functionality. For example, we took into consideration edge cases for user input case sensitivity, accidental whitespace, and when users may type invalid coordinates.
 
 ### Accomplishments:
 - Through the development process, we gained a deep appreciation for test-driven development. Writing tests before implementing functionality not only ensured the accuracy of our code but also guided our design decisions. It helped us catch bugs early and refactor with confidence.
@@ -31,3 +31,20 @@ Welcome to our Battleship game implemented in Ruby! This project is a collaborat
 
 #### Reflection on Potential Refactor
 > If we had more time, we would spend more time on testing for our NewGame class. It was difficult to test the output and user input since these occur within the terminal and not within a webpage. We would also work on decoupling more methods through single-responsibility-principles, dependency injection, and encapsulation.
+---
+## How To Play
+1. Clone the Repository: Begin by cloning this repository to your local machine using the following command:
+`git clone git@github.com:westonio/battle_ship.git`
+
+2. Navigate to Project Directory: Move into the project directory:
+`cd battle_ship`
+
+3. Run the Game: Launch the game by running the following command:
+`ruby battleship.rb`
+
+4. Follow Instructions: The game will prompt you to provide the board dimensions, ship count, and ship sizes. Follow the on-screen instructions to set up your game.
+
+**Gameplay:** Once the game is set up, take turns with your opponent to guess each other's ship placements. The game will display the current state of the board and inform you if a ship has been hit or sunk.
+
+**Winning the Game:** The player who sinks all of their opponent's ships first is declared the winner.
+
