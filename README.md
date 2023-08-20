@@ -1,14 +1,33 @@
 # Battle Ship
 
-### Reflection
-1. Iteration 3 did not provide an interaction pattern. How did you approach designing this iteration? If you did not get to Iteration 3, reflect on how you think you would’ve approached the design and problem solving process. <br />
-> We created methods one at a time following the ideal user experience pattern playing the game in Iteration 3, and tested them at each interval. We created these methods and flow in a separate class of for the game. We quickly learned that having the inputs and outputs in their own class would be more beneficial and better uphold SRP, so we separated them into user interface and game flow classes.
+## Project Overview 
+Welcome to our Battleship game implemented in Ruby! This project is a collaborative effort that demonstrates our proficiency in test-driven development (TDD) using RSpec. The game can be played entirely within the terminal and allows players to engage in the classic Battleship strategy game, where they strategically place ships on a board and attempt to sink their opponent's ships.
 
-3. If you had one more day to work on this project, what would you work on? <br />
-> We would spend more time on testing for our NewGame class. It was difficult to test output/input and part the reason we created a user interface class to handle the user inputs, but we still found it difficult to test after separating these. We would also work on removing a number of dependencies and limit use of global variables.
+### Languages, Frameworks, and Tools used:
+- **Built with:** Ruby
+- **Tested with:** RSpec
+- **Tools / Workflow:** Git, GitHub, GitHub Projects, Driver-Navigator Pair Programming
 
-4. Describe the pairing techniques you used while working on this project. <br />
-> We mostly used the driver/navigator workflow. When it came to later sections of the project, we were able to split off and work separately more often while also leaning on each other for thought partnership.
+### Features
+- **Dynamic Board Size:** Our Battleship game offers the flexibility to choose the dimensions of the game board. Players can specify the number of rows and columns they want (up to 10), tailoring the experience to their preference.
+- **Custom Ship Configuration:** Players can also set the number, size, and name of the ships that will be placed on the board. This feature allows for a customizable game experience, ensuring excitement for players of all skill levels.
+- **Computer Opponent:** Users can play against a computer opponent with dynamic and random ship placement to ensure the user can play the game again and again.
+- **User Feedback**: The user is given visual feedback on the gameboard and dialogue to emulate the real game.
+- **TDD Approach:** The game's development followed a test-driven approach using RSpec. Our codebase is thoroughly tested to ensure robustness, reliability, and maintainability.
 
-5. Describe how feedback was shared over the course of this project. <br />
-> Since we worked together often and both prefer feedback in real-time, we actively gave feedback in the moment verbally or via slack/github. Often we would have a discussion about how we want to prioritize addressing any issues or concerns, whether it be now or after we finish our current objective.
+### Project Challenges:
+- Working collaboratively using the driver-navigator style required effective communication and synchronization among team members. Coordinating coding sessions, ensuring consistent coding style, and resolving merge conflicts in the version control system were challenges we had to overcome.
+- Designing a game that allowed players to dynamically set the board dimensions and customize the ship configuration presented challenges in terms of validation and ensuring the game's rules were upheld. We needed to handle edge cases, such as when the board size was too small for the specified ship sizes or when the total ship area exceeded the board area.
+- Developing a Battleship game with multiple layers of logic, including board setup, ship placement, and hit detection, posed a challenge in terms of writing comprehensive unit tests. We had to ensure that our test suite covered all possible scenarios, interactions, and edge cases to provide confidence in the game's functionality.
+
+### Accomplishments:
+- Through the development process, we gained a deep appreciation for test-driven development. Writing tests before implementing functionality not only ensured the accuracy of our code but also guided our design decisions. It helped us catch bugs early and refactor with confidence.
+- Collaborating in a group project taught us valuable skills in communication, especially when switching roles between driver and navigator. Sharing ideas, explaining design choices, and reviewing each other's code fostered a productive and learning-oriented environment.
+- Building a game with customizable board dimensions and ship configurations taught us about designing for flexibility and user-friendliness. We learned to balance user input validation, error handling, and maintaining a coherent gaming experience that adhered to the rules of Battleship.
+- Creating Battleship as a collaborative group project allowed us to master the art of working together effectively using Git version control and using GitHub projects. We successfully managed to maintain a shared codebase, facilitate code reviews, and address merge conflicts efficiently. This accomplishment showcases our ability to collaborate seamlessly as a team and manage a complex project.
+
+### Other Project Contributor: 
+- [Connor Richmond](https://github.com/ConnorRichmond)
+
+#### Reflection on Potential Refactor
+> If we had more time, we would spend more time on testing for our NewGame class. It was difficult to test the output and user input since these occur within the terminal and not within a webpage. We would also work on decoupling more methods through single-responsibility-principles, dependency injection, and encapsulation.
