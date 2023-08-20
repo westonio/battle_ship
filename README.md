@@ -33,18 +33,27 @@ Welcome to our Battleship game implemented in Ruby! This project is a collaborat
 > If we had more time, we would spend more time on testing for our NewGame class. It was difficult to test the output and user input since these occur within the terminal and not within a webpage. We would also work on decoupling more methods through single-responsibility-principles, dependency injection, and encapsulation.
 ---
 ## How To Play
-1. Clone the Repository: Begin by cloning this repository to your local machine using the following command:
+- **Clone the Repository:** Begin by cloning this repository to your local machine using the following command:
 `git clone git@github.com:westonio/battle_ship.git`
 
-2. Navigate to Project Directory: Move into the project directory:
+- **Navigate to Project Directory:** Move into the project directory:
 `cd battle_ship`
 
-3. Run the Game: Launch the game by running the following command:
-`ruby battleship.rb`
+- **Run the Game:** Launch the game by running the following command:
+`ruby runner.rb`
 
-4. Follow Instructions: The game will prompt you to provide the board dimensions, ship count, and ship sizes. Follow the on-screen instructions to set up your game.
+- **Follow Instructions:** Within the terminal, the game will prompt you to provide the board dimensions, ship count, and ship sizes. Follow the on-screen instructions to set up your game.
 
-**Gameplay:** Once the game is set up, take turns with your opponent to guess each other's ship placements. The game will display the current state of the board and inform you if a ship has been hit or sunk.
+- **Gameplay:** Once the game is set up, take turns with your opponent to guess each other's ship placements. The game will display the current state of the board and inform you if a ship has been hit or sunk. 👾
+  
+- **Winning the Game:** The player who sinks all of their opponent's ships first is declared the winner. 🎉
 
-**Winning the Game:** The player who sinks all of their opponent's ships first is declared the winner.
+### Terminal Gameplay Photos:
+#### Setup <br/>
+<img width="623" alt="Screenshot 2023-08-20 at 12 04 28 PM" src="https://github.com/westonio/battle_ship/assets/117330008/35218125-daec-43b3-b17b-705ae863d563">
+<br/><br/>
+
+#### Game Over <br/>
+<img width="453" alt="Screenshot 2023-08-20 at 12 06 53 PM" src="https://github.com/westonio/battle_ship/assets/117330008/c343e9de-fa1d-4460-91ec-1113cd76a9da">
+
 
