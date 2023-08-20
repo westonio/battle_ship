@@ -5,7 +5,7 @@ Welcome to our Battleship game implemented in Ruby! This project is a collaborat
 
 ### Languages, Frameworks, and Tools used:
 - **Built with:** Ruby
-- **Tested with:** RSpec
+- **Tested with:** RSpec (and Pry for spiking out solutions)
 - **Tools / Workflow:** Git, GitHub, GitHub Projects, Driver-Navigator Pair Programming
 ---
 ### Features
